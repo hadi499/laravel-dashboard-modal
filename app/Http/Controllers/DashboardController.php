@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Resources\PostResource;
 use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
@@ -18,12 +19,12 @@ class DashboardController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $posts = Post::all();
-        $image_url = asset('storage/');
+        $posts = PostResource::collection(Post::latest()->get());
+        // $image_url = asset('storage/');
         return Inertia::render('Dashboard/Index', [
             'posts' => $posts,
             'categories' => $categories,
-            'image_url' => $image_url
+
         ]);
     }
 

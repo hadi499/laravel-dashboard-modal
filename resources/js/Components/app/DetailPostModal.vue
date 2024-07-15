@@ -8,7 +8,10 @@
             <div>
                 {{ post.title }}
             </div>
-            <img :src="image_url + '/' + post.image" alt="">
+            <img :src="post.image_url + '/' + post.image" alt="">
+            <div>
+                {{ post.body }}
+            </div>
             <div class="mt-6 flex justify-end">
                 <PrimaryButton @click="closeModal">Close</PrimaryButton>
 
@@ -28,7 +31,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue"
 defineProps({
     modelValue: Boolean,
     post: Object,
-    image_url: String
+    // image_url: String
 
 })
 

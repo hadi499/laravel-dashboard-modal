@@ -9,6 +9,7 @@
 
         <div class="py-12">
 
+
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="mb-3 flex justify-end">
                     <a href="#" @click.prevent="showCreatePostModal" class=" px-4 py-2 bg-indigo-500 hover:bg-indigo-700 text-white
@@ -28,6 +29,9 @@
                                     Excerpt
                                 </th>
                                 <th class="text-lg font-semibold text-gray-900  py-4 text-left">
+                                    Category
+                                </th>
+                                <th class="text-lg font-semibold text-gray-900  py-4 text-left">
                                     Created at
                                 </th>
                                 <th class="text-lg font-semibold text-gray-900  py-4 text-left">
@@ -37,13 +41,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="post of posts" :key="post.id">
+                            <tr v-for="post of posts.data" :key="post.id">
 
                                 <td class="py-4  text-sm font-medium text-gray-900 ">
                                     {{ post.title }}
                                 </td>
                                 <td class="py-4 text-sm font-medium text-gray-900 ">
                                     {{ post.excerpt }}
+                                </td>
+                                <td class="py-4 text-sm font-medium text-gray-900 ">
+                                    {{ post.category.name }}
                                 </td>
 
 
@@ -65,7 +72,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div v-if="!posts.length" class="py-8 text-center text-sm text-gray-400">
+                    <div v-if="!posts.data.length" class="py-8 text-center text-sm text-gray-400">
                         There is no data in this folder
                     </div>
 
@@ -74,8 +81,7 @@
         </div>
         <createPostModal v-model="createPostModal" :categories="categories" />
         <DetailPostModal v-model="postDetailModal" :post="selectedPost" :image_url="image_url" />
-        <EditPostModal v-model="editPostModal" :post="selectedPost" :categories="categories"
-            @update:modelValue="editPostModal = $event" @update:post="updatePost" />
+        <EditPostModal v-model="editPostModal" :post="selectedPost" :categories="categories" />
         <DeleteModal v-model="deletePostModal" :post="selectedPost" />
     </AuthenticatedLayout>
 </template>
@@ -100,7 +106,7 @@ const selectedPost = ref(null)
 defineProps({
     posts: Object,
     categories: Object,
-    image_url: String
+    // image_url: String
 
 })
 

@@ -23,7 +23,7 @@
                 </div>
                 <div>
                     <InputLabel for="category_id" value="Category" />
-                    <select v-model="form.category_id" id="category_id" name="category_id" class="
+                    <select v-model="form.category_id" id="category_id" name="category_id" class=" 
                 mt-1
                 block
                 w-full
@@ -99,7 +99,7 @@ watch(() => props.post, (newPost) => {
     form.title = newPost?.title || '';
     form.slug = newPost?.slug || '';
     form.oldImage = newPost?.image || '';
-    form.category_id = newPost?.category_id || null;
+    form.category_id = newPost?.category.id || null;
     form.body = newPost?.body || '';
 }, { immediate: true });
 
