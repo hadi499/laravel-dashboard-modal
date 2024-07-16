@@ -16,6 +16,18 @@
                         rounded-md
             ">New Post</a>
                 </div>
+                <div class="relative">
+                    <input type="text" v-model="search"
+                        class="py-2 pl-10 pr-3 w-64 border border-gray-300 rounded-lg outline-none focus:border-blue-500">
+                    <button type="submit" class="absolute left-2 top-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
+                    </button>
+                </div>
+
 
                 <div class="">
                     <table class="min-w-full">
@@ -54,7 +66,7 @@
                                 </td>
 
 
-                                <td>
+                                <td class="py-4 text-sm font-medium text-gray-900 ">
                                     {{ post.created_at }}
                                 </td>
                                 <td>
@@ -75,6 +87,8 @@
                     <div v-if="!posts.data.length" class="py-8 text-center text-sm text-gray-400">
                         There is no data in this folder
                     </div>
+                    <Pagination :links="posts.meta.links" />
+
 
                 </div>
             </div>
@@ -91,10 +105,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import CreatePostModal from '@/Components/app/CreatePostModal.vue'
 import DetailPostModal from '@/Components/app/DetailPostModal.vue'
 import EditPostModal from '@/Components/app/EditPostModal.vue'
+import Pagination from '@/Components/Pagination.vue'
 import { Head, Link } from '@inertiajs/vue3'
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import DeleteModal from '@/Components/app/DeleteModal.vue';
 import { Inertia } from "@inertiajs/inertia";
+import { debounce } from 'lodash';
+
 
 const createPostModal = ref(false)
 const postDetailModal = ref(false)
@@ -103,10 +120,12 @@ const deletePostModal = ref(false);
 const selectedPost = ref(null)
 
 
-defineProps({
+
+const props = defineProps({
     posts: Object,
     categories: Object,
-    // image_url: String
+    filters: Object
+
 
 })
 
@@ -129,16 +148,40 @@ const showDeleteModal = (post) => {
     deletePostModal.value = true;
 };
 
-const updatePost = (updatedPost) => {
-    const index = props.posts.findIndex(post => post.id === updatedPost.id);
-    if (index !== -1) {
-        props.posts[index] = updatedPost;
-    }
-};
+const search = ref(props.filters.search)
+// watch(search, value => {
+//     Inertia.get('/dashboard', { search: value }, {
+//         preserveState: true,
+//         preserveScroll: true,
+//         replace: true
+//     })
+// })
+
+const debouncedSearch = debounce((value) => {
+    Inertia.get('/dashboard', { search: value }, {
+        preserveState: true,
+        replace: true,
+    });
+}, 300);
+
+watch(search, value => {
+    debouncedSearch(value);
+});
+
+// const updatePost = (updatedPost) => {
+//     const index = props.posts.findIndex(post => post.id === updatedPost.id);
+//     if (index !== -1) {
+//         props.posts[index] = updatedPost;
+//     }
+// };
+
+
 
 // const deletePost = (id) => {
 //     if (confirm('Are you sure you want to delete this post?')) {
 //         Inertia.delete(`/dashboard/${id}`);
 //     }
 // };
+
+
 </script>

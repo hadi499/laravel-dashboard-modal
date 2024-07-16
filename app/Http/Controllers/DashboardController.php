@@ -16,14 +16,38 @@ class DashboardController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $categories = Category::all();
-        $posts = PostResource::collection(Post::latest()->get());
+        $search = $request->input('search');
+        // $query = Post::query()
+        //     ->when($request->input('search'), function ($query, $search) {
+        //         $query->where('title', 'like', "%{$search}%");
+        //     })
+        //     ->paginate(3);
+
+        $query = Post::query()
+            ->when($search, function ($query, $search) {
+                // Memecah kata kunci pencarian menjadi array
+                $searchTerms = explode(' ', $search);
+
+                foreach ($searchTerms as $term) {
+                    // Menggunakan where untuk setiap kata kunci
+                    $query->where('title', 'like', "%{$term}%");
+                }
+            })
+            ->latest()->paginate(3);
+
+        $posts = PostResource::collection($query);
+        // $posts = PostResource::collection(Post::latest()->paginate(3));
+
+
+        // $posts = PostResource::collection(Post::latest()->get());
         // $image_url = asset('storage/');
         return Inertia::render('Dashboard/Index', [
             'posts' => $posts,
             'categories' => $categories,
+            'filters' => $request->only(['search'])
 
         ]);
     }

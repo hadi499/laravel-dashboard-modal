@@ -9,9 +9,7 @@
                 {{ post.title }}
             </div>
             <img :src="post.image_url + '/' + post.image" alt="">
-            <div>
-                {{ post.body }}
-            </div>
+            <div v-html="post.body"></div>
             <div class="mt-6 flex justify-end">
                 <PrimaryButton @click="closeModal">Close</PrimaryButton>
 

@@ -40,7 +40,8 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <InputLabel for="body" value="Body" />
-                    <TextAreaInput class="w-full" rows="8" id="body" type="text" v-model="form.body" />
+                    <!-- <TextAreaInput class="w-full" rows="8" id="body" type="text" v-model="form.body" /> -->
+                    <Editor v-model="form.body" />
 
                     <InputError :message="form.errors.body" />
                 </div>
@@ -67,7 +68,7 @@ import TextAreaInput from '@/Components/TextArea.vue'
 import { useForm, usePage } from "@inertiajs/vue3";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-
+import Editor from '@/Components/Editor.vue'
 
 
 

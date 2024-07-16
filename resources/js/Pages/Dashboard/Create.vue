@@ -36,6 +36,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import Input from '@/Components/TextInput.vue'
 import InputError from '@/Components/InputError.vue'
+import Editor from '@/Components/Editor.vue'
 
 
 defineProps({
